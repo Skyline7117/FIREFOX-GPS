@@ -1,0 +1,93 @@
+Cet page à pour objectif projet pour chaque semaine afin qu'elle soit visible de toute l'équipe projet.
+
+On peut retrouver dans les différents jalon, les 3 phases du projet '''''FIREFOX-GPS'''''. Mais il faut aussi prendre en comptes des élements externes qui sont:
+*La mise en place d'un dispositif de communication viable entre les membre du projet situé à Evry et dà e Nice
+*La mise en place d'un outils de travail collaboratif avec toutes les phase de formation pour les membre de Nice
+----
+
+Dans cet première partie, l'objectif est de se familiarisé avec les différents outils.
+
+{| class="wikitable" border="2" 
+! colspan="3" |  Jalon 1
+|-
+| '''Objectif'''
+| '''Réalisé''' 
+| '''Détails'''
+|- 
+| 18/01/2016
+| 18/01/2016 
+| Comprendre le fonctionnement les différents modules en les testants de façon unitaire gràce à des simulateurs (Tous)
+|-
+| 18/01/2016
+| 18/01/2016
+| Extraire les cartes OSM de la région parisienne et de la région niçoise ici (Ziyad)
+|-
+| 18/01/2016
+| 18/01/2016
+| Apprendre à afficher une carte OSM dans une page HTML avec Leaflet (Ziyad)
+|-
+| 25/01/2016
+| style="text-align:center;" | N/A
+| Apprendre à calculer ( et à recalculer en temps réel ) des routes
+|-
+| 01/02/2016
+| 25/02/2016
+| Apprendre à géocoder et à récupéer le signal GPS du smartphone (Anthony et Ziyad)
+|-
+| 08/02/2016
+| N/A
+| Elaborations de spécification fonctionnelles détaillé (Mohamed Ali)
+|-
+|}
+----
+
+Dans cet deuxième partie, il ns'agit de recomposé tous les différents module dévelloper séparement pour en faire une seule application.
+
+{| class="wikitable" border="2"
+! colspan="3" |  Jalon 2
+|-
+| '''Objectif'''
+| '''Réalisé''' 
+| '''Détails'''
+|-
+| 08/02/2016
+| N/A
+| Intégrer ces quatres composants en une seule application capable de fonctionner online en téléchargeant les cartes nécessaires déduites de la géolocalisation du smartphone
+|-
+| 08/02/2016
+| N/A
+| Mise en place de l'ergonomie de l'application ainsi que toutes les règles de gestion en se basant sur les spécification fonctionnelles détaillé
+|-
+| 15/02/2016
+| N/A
+| Premier retour de recette
+|-
+|}
+----
+
+Dans cet troisième et dernière partie, il s'agit de rajouter une nouvelle fonctionnalité qui doit permettre à l'application de fonctionner offline
+
+{| class="wikitable" border="2"
+! colspan="3" |  Jalon 3
+|-
+| '''Objectif'''
+| '''Réalisé'''
+| '''Détails'''
+|-
+| 22/02/2016
+| N/A
+| Permettre l'utilisation de cartes OSM stockées sur la carte SD du smartphone pour fonctionner offline
+*Une gestion intelligente des cartes est à prévoir : quand dois-je mettre à jour les cartes OSM qui sont sur ma carte SD ?
+*Une gestion mixte peut aussi être prévue
+**Si j'ai les cartes OSM nécessaires à ma géolocalisation sur ma carte SD, je peux rester offline.
+**Par contre si ma géolocalisation me demande des cartes OSM qui ne sont pas sur ma carte SD, je dois envoyer un message à l'utilisateur en lui demandant de se connecter à un réseau pour pouvoir téléchager les cartes OSM manquantes
+|-
+| 22/02/2016
+| N/A
+| Deuxième et dernière phase de recette
+|-
+| 29/02/2016
+| N/A
+| Elaboration d'un guide utilisateur
+|-
+|}
