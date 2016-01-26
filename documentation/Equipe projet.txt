@@ -1,0 +1,41 @@
+Présentation de toutes l'équipes projet
+
+
+{| class="wikitable" border="2" 
+! colspan="4" |  Contact
+|-
+| '''Catégorie'''
+| '''Rôle''' 
+| '''Nom'''
+| '''Mail'''
+|- 
+| Ensseingnant
+| Coordinateur projet
+| Didier Courtaud
+| didier.courtaud@univ-evry.fr
+|-
+| Etudiant PARIS-SACLAY
+| Chef de projet MOA
+| Mohamed Ali HAMMOUD 
+| mohamed.ali.hammoud71@gmail.com
+|-
+| Etudiant PARIS-SACLAY
+| Chef de projet MOE
+| Ziyad BEN-MESSAOUD 
+| z.benmess@gmail.com
+|-
+| Etudiant PARIS-SACLAY
+| Développeur WEB
+| Aziz BOUHAFS
+| aziz.bouhafs@gmail.com
+|-
+| Etudiant NICE        
+| Développeur CSS
+| Amel Mechalikh
+| amel.mechalikh@gmail.com
+|-
+| Etudiant NICE
+| Développeur JavaScript
+| Anthony Caron 
+| caron6anthony@gmail.com
+|}
