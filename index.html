@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>FireGPS</title>
 
-	<link rel="stylesheet" href="leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="leaflet-routing-machine.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
@@ -41,10 +41,15 @@
         </div>
 		
         <div class="navbar-collapse collapse">
+        	
+          <!-- Recherche Adresse -->	
           <form class="navbar-form navbar-right" role="search">
             <div class="form-group has-feedback">
                 <input id="searchbox" type="text" placeholder="Rechercher" class="form-control">
+                <button type="button" onclick="addr_search();">Search</button>
+                <div id="results"></div>
                 <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+                
             </div>
           </form>
 		  
@@ -184,6 +189,7 @@
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
 	<script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+        <script src="assets/js/Control.Geocoder.js"></script>
     <script src="assets/js/app.js"></script>
   </body>
 </html>
