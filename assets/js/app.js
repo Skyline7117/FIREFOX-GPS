@@ -166,16 +166,99 @@ var locateControl = L.control.locate({
 /*Pop-up*/
 var popup = L.popup();
 
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
+/* utilisation Leaflet Control Geocoder avec utilisation des icons */
+var geocoder = L.Control.Geocoder.nominatim(),
+  myIcon = L.icon({
+    iconUrl: './assets/img/favicon.ico',
+    //shadowUrl: 'leaf-shadow.png',
+
+    iconSize:     [32, 32], // size of the icon
+    //shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [16, 30], // point of the icon which will correspond to marker's location
+    //shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+  }),
+  marker;
+
 function onMapClick(e) {
-    popup
+    console.log("slt");
+    geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+      var r = results[0];
+      
+      if (r) {
+        if (marker) {
+            
+          marker.
+            setLatLng(r.center).
+            setPopupContent(r.html || r.name).
+            openPopup();
+        } else {
+         
+          marker = L.marker(r.center,{icon:myIcon}).bindPopup(r.name).addTo(map).openPopup();
+        }
+      }
+    });
+
+    /*popup
         .setLatLng(e.latlng)
         .setContent("Adresse : " + e.latlng.toString())
-        .openOn(map);
+        .openOn(map);*/
 }
 
 map.on('click', onMapClick);
 
-/*Routage*/
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
+//Module recherche
+function addr_search() {
+  var inp = document.getElementById("searchbox");
+  console.log(inp);
+
+  $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + inp.value, function(data) {
+      var items = [];
+
+$.each(data, function(key, val) {
+  items.push(
+    "<li><a href='#' onclick='chooseAddr(" +
+    val.lat + ", " + val.lon + ");return false;'>" + val.display_name +
+    '</a></li>'
+  );
+});
+  $('#results').empty();
+    if (items.length != 0) {
+      $('<p>', { html: "Search results:" }).appendTo('#results');
+      $('<ul/>', {
+        'class': 'my-new-list',
+        html: items.join('')
+      }).appendTo('#results');
+    } else {
+      $('<p>', { html: "No results found" }).appendTo('#results');
+    }
+  });
+}
+function chooseAddr(lat, lng, type) {
+  var location = new L.LatLng(lat, lng);
+  map.panTo(location);
+  var markerRecherche=L.marker([lat, lng],{icon:myIcon}).addTo(map)
+   
+  
+
+  if (type == 'city' || type == 'administrative') {
+    map.setZoom(11);
+  } else {
+    map.setZoom(13);
+  }
+}
+
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
+
+/*Routage
 var map = L.map('map');
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -188,4 +271,4 @@ L.Routing.control({
         L.latLng(57.6792, 11.949)
     ],
     routeWhileDragging: true
-}).addTo(map);
+}).addTo(map);*/
