@@ -1,4 +1,5 @@
-var map, featureList;
+var map, featureList,locationLat,locationLng,geolocation;
+
 
 $(window).resize(function() {
   sizeLayerControl();
@@ -55,7 +56,7 @@ var mapquestOSM = L.tileLayer("https://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}
   attribution: 'Carte extraite de <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.'
 });
 
-/* POIs et téléchargement des POIs */
+/* POIs et tÃ©lÃ©chargement des POIs */
 var highlight = L.geoJson(null);
 var highlightStyle = {
   stroke: false,
@@ -86,7 +87,7 @@ $.getJSON("data/boroughs.geojson", function (data) {
   boroughs.addData(data);
 });
 
-/* POIs et téléchargement des POIs */
+/* POIs et tÃ©lÃ©chargement des POIs */
 var markerClusters = new L.MarkerClusterGroup({
   spiderfyOnMaxZoom: true,
   showCoverageOnHover: false,
@@ -94,9 +95,9 @@ var markerClusters = new L.MarkerClusterGroup({
   disableClusteringAtZoom: 16
 });
 
-$.getJSON("data/DOITT_MUSEUM_01_13SEPT2010.geojson", function (data) {
+/*$.getJSON("data/DOITT_MUSEUM_01_13SEPT2010.geojson", function (data) {
   museums.addData(data);
-});
+});*/
 
 map = L.map("map", {
   zoom: 18,
@@ -105,6 +106,8 @@ map = L.map("map", {
   zoomControl: false,
   attributionControl: false
 });
+
+
 
 /* Contribution*/
 function updateAttribution(e) {
@@ -122,7 +125,7 @@ var attributionControl = L.control({
 });
 attributionControl.onAdd = function (map) {
   var div = L.DomUtil.create("div", "leaflet-control-attribution");
-  div.innerHTML = "<span class='hidden-xs'>Développé par <a href='https://github.com/Skyline7117/FIREFOX-GPS'>NicEvry</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
+  div.innerHTML = "<span class='hidden-xs'>DÃ©veloppÃ© par <a href='https://github.com/Skyline7117/FIREFOX-GPS'>NicEvry</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
   return div;
 };
 map.addControl(attributionControl);
@@ -151,8 +154,8 @@ var locateControl = L.control.locate({
   metric: false,
   strings: {
     title: "Ma location",
-    popup: "vous êtes à {distance} {unit} depuis ce point",
-    outsideMapBoundsMsg: "Vous êtes en dehors de la carte"
+    popup: "vous Ãªtes Ã  {distance} {unit} depuis ce point",
+    outsideMapBoundsMsg: "Vous Ãªtes en dehors de la carte"
   },
   locateOptions: {
     maxZoom: 18,
@@ -161,6 +164,28 @@ var locateControl = L.control.locate({
     maximumAge: 10000,
     timeout: 10000
   }
+}).addTo(map);
+
+var wayPoints=[];
+
+map.on('startfollowing',getGeolocation);
+
+map.on('locationfound',getGeolocation);
+
+// routing
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: 'Â© OpenStreetMap contributors'
+}).addTo(map);
+
+
+
+
+var routingControl=L.Routing.control({
+    routeWhileDragging: true,
+    autoRoute : true,
+    language:'fr',
+    
+    
 }).addTo(map);
 
 /*Pop-up*/
@@ -183,8 +208,31 @@ var geocoder = L.Control.Geocoder.nominatim(),
   }),
   marker;
 
+function reverseGeocoding(lat,lon)
+{
+    var location = new L.LatLng(lat, lon);
+    
+    var adresse;
+
+    geocoder.reverse(location, map.options.crs.scale(map.getZoom()), function(results) {
+         var r = results[0];
+
+         if (r) {
+
+               adresse=(r.html || r.name);
+                console.log(adresse);
+
+
+         }
+
+
+       });
+       console.log('adresse est :' +adresse);
+
+    
+}
+
 function onMapClick(e) {
-    console.log("slt");
     geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
       var r = results[0];
       
@@ -213,45 +261,121 @@ map.on('click', onMapClick);
 /*************************************************************/
 /*************************************************************/
 /*************************************************************/
-//Module recherche
-function addr_search() {
-  var inp = document.getElementById("searchbox");
-  console.log(inp);
+/*get la geolocalisation de l'utilisateur, 
+le control.locate emet les evenements "startfollowing" */
 
-  $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + inp.value, function(data) {
-      var items = [];
-
-$.each(data, function(key, val) {
-  items.push(
-    "<li><a href='#' onclick='chooseAddr(" +
-    val.lat + ", " + val.lon + ");return false;'>" + val.display_name +
-    '</a></li>'
-  );
-});
-  $('#results').empty();
-    if (items.length != 0) {
-      $('<p>', { html: "Search results:" }).appendTo('#results');
-      $('<ul/>', {
-        'class': 'my-new-list',
-        html: items.join('')
-      }).appendTo('#results');
-    } else {
-      $('<p>', { html: "No results found" }).appendTo('#results');
+function getGeolocation(e)
+{
+    console.log(e.latlng);
+    geolocation=e.latlng;
+    var myLocation=new L.LatLng(locationLat,locationLng);
+    console.log(myLocation);
+    if(myLocation)
+    {
+        wayPoints=[];
+        wayPoints.push(geolocation);
+        wayPoints.push(myLocation);
+        routingControl.setWaypoints(wayPoints);
+        console.log(myLocation);
+        routingControl.route();   
+        
     }
-  });
+   
 }
-function chooseAddr(lat, lng, type) {
-  var location = new L.LatLng(lat, lng);
-  map.panTo(location);
-  var markerRecherche=L.marker([lat, lng],{icon:myIcon}).addTo(map)
+
+//recherche adresse
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
+//Module recherche
+function search_adresse(adresse) 
+{
+	
+	var masquer = document.getElementById('results');  
+	
+	$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + adresse, function(data) 
+	{
+		masquer.style.display="";
+		var items = [];
+
+		$.each(data, function(key, val)
+		{
+		  items.push
+		  (
+			"<li><a href='#' onclick='chooseAdresse(" +
+			val.lat + ", " + val.lon + ");return false;'>" + val.display_name +
+			'</a></li>'
+		  );
+		});
+		  
+		$('#results').empty();
+		if (items.length != 0) 
+		{
+		  $('<p>', { html: "Search results :" }).appendTo('#results');
+		  $('<ul/>', {
+			'class': 'my-new-list',
+			html: items.join('')
+		  }).appendTo('#results');
+		} 
+		else 
+		{
+		  $('<p>', { html: "No results found" }).appendTo('#results');
+		}
+	});
+  
+}
+
+// choix de l'adresse
+/**********************************************************/
+/**********************************************************/
+function chooseAdresse(lat, lng, type) {
+
+ var location = new L.LatLng(lat, lng);
+ locationLat=lat;locationLng=lng;
+ 
+ var masquer = document.getElementById('results');  
+
+ masquer.style.display="none";
+ 
+ //map.panTo(location);
+  
    
   
-
-  if (type == 'city' || type == 'administrative') {
+  /*if (type == 'city' || type == 'administrative') {
     map.setZoom(11);
   } else {
     map.setZoom(13);
-  }
+  }*/
+    
+    //marker avec popup contenat l'adresse 
+      geocoder.reverse(location, map.options.crs.scale(map.getZoom()), function(results) {
+      var r = results[0];
+      
+      if (r) {
+      
+            adresse=(r.html || r.name);
+            var markerRecherche;
+             markerRecherche=L.marker(location,{icon:myIcon}).bindPopup(adresse).addTo(map).openPopup();
+            if(geolocation)
+            {
+               // document.getElementById("results").hide;
+                wayPoints=[];
+                wayPoints.push(geolocation);
+                wayPoints.push(location);
+                
+                routingControl.setWaypoints(wayPoints);
+                console.log(routingControl.getWaypoints());
+                routingControl.route();
+            }
+            else
+            {
+                alert('Pour vous indiquer le chemin vers ce lieu vous devez d abord vous geolocaliser');
+            }
+      
+      }
+      
+    });
+        
 }
 
 /*************************************************************/
@@ -262,7 +386,7 @@ function chooseAddr(lat, lng, type) {
 var map = L.map('map');
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
+    attribution: 'Â© OpenStreetMap contributors'
 }).addTo(map);
 
 L.Routing.control({
