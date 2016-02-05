@@ -107,7 +107,28 @@ map = L.map("map", {
   attributionControl: false
 });
 
+//geolocalisation 
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
+function onLocationFound(e)
+{
+	var radius = e.accuracy / 2;
+	
+	L.marker(e.latlng).addTo(map)
+		.bindPopup("Vous êtes à " + radius + " mètres de ce point !").openPopup();
+	
+	L.circle(e.latlng, radius).addTo(map);
+}
 
+function onLocationError(e) {
+	alert(e.message);
+}
+
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
+
+map.locate({setView: true, maxZoom: 16});
 
 /* Contribution*/
 function updateAttribution(e) {
@@ -282,28 +303,7 @@ function getGeolocation(e)
     }
    
 }
-//geolocalisation 
-/*************************************************************/
-/*************************************************************/
-/*************************************************************/
-function onLocationFound(e)
-{
-	var radius = e.accuracy / 2;
-	
-	L.marker(e.latlng).addTo(map)
-		.bindPopup("You are within " + radius + " meters from this point").openPopup();
-	
-	L.circle(e.latlng, radius).addTo(map);
-}
 
-function onLocationError(e) {
-	alert(e.message);
-}
-
-map.on('locationfound', onLocationFound);
-map.on('locationerror', onLocationError);
-
-map.locate({setView: true, maxZoom: 16});
 
 //recherche adresse
 /*************************************************************/
