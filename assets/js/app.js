@@ -324,8 +324,8 @@ function search_adresse(adresse)
 		{
 		  items.push
 		  (
-			"<li><a href='#' onclick='chooseAdresse(" +
-			val.lat + ", " + val.lon + ");return false;'>" + val.display_name +
+			'<li><a href="#" onclick="chooseAdresse(' +
+			val.lat + ', ' + val.lon +' ,\' '+val.display_name+ '\' );return false;">' + val.display_name +
 			'</a></li>'
 		  );
 		});
@@ -356,8 +356,12 @@ function chooseAdresse(lat, lng, type) {
  locationLat=lat;locationLng=lng;
  
  var masquer = document.getElementById('results');  
+ //afficher adresse dans la barre de menu
+ var rech = document.getElementById('searchbox'); 
 
  masquer.style.display="none";
+ //afficher adresse
+ rech.value=type;
  
  //map.panTo(location);
   
