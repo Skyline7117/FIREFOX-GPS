@@ -1,3 +1,39 @@
+.suggestionsBox {
+	position: relative;
+	left: 0px;
+	margin: 1px 0px 0px 1105px;
+	width: 230px;
+	background-color: white;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border: 2px solid #000;	
+	font-size: 0.8em;
+	font-family: "Arial Black";
+	font-weight: bold;
+	color: #008094;
+	}
+
+.suggestionList {
+	margin: 0px;
+	padding: 0px;	
+}
+
+.suggestionList li {
+	list-style-type: none;
+	text-align:center;
+	margin: 0px 0px 3px -82px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.suggestionList li:hover {
+	background-color: #C8C8C8;
+}
+
+/**************************************************/
+/**************************************************/
+/**************************************************/
+
 html, body, #container {
   height: 100%;
   width: 100%;
