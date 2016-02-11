@@ -313,27 +313,31 @@ function getGeolocation(e)
 function search_adresse(adresse) 
 {
 	
-	var masquer = document.getElementById('results');  
+	var masquer = document.getElementById('results'); 
+	var demasquer = document.getElementById('suggestions');  
 	
 	$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + adresse, function(data) 
 	{
 		masquer.style.display="";
+		demasquer.style.display="";
+		
 		var items = [];
 
 		$.each(data, function(key, val)
 		{
 		  items.push
 		  (
-			'<li><a href="#" onclick="chooseAdresse(' +
+			'<ul><li><a href="#" onclick="chooseAdresse(' +
 			val.lat + ', ' + val.lon +' ,\' '+val.display_name+ '\' );return false;">' + val.display_name +
-			'</a></li>'
+			'</a></li></ul>'
 		  );
+		  
 		});
 		  
 		$('#results').empty();
 		if (items.length != 0) 
 		{
-		  $('<p>', { html: "Search results :" }).appendTo('#results');
+		  //$('<p>', { html: "Search results :" }).appendTo('#results');
 		  $('<ul/>', {
 			'class': 'my-new-list',
 			html: items.join('')
@@ -341,7 +345,7 @@ function search_adresse(adresse)
 		} 
 		else 
 		{
-		  $('<p>', { html: "No results found" }).appendTo('#results');
+		  $('<li>', { html: "No results found" }).appendTo('#results');
 		}
 	});
   
@@ -356,11 +360,11 @@ function chooseAdresse(lat, lng, type) {
  locationLat=lat;locationLng=lng;
  
  var masquer = document.getElementById('results');  
- //afficher adresse dans la barre de menu
+ var demasquer = document.getElementById('suggestions'); 
  var rech = document.getElementById('searchbox'); 
 
  masquer.style.display="none";
- //afficher adresse
+ demasquer.style.display="none";
  rech.value=type;
  
  //map.panTo(location);
