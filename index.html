@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <title>FireGPS</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
@@ -20,17 +20,19 @@
     <link rel="stylesheet" href="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
     <link rel="stylesheet" href="assets/css/app.css">
 
-    <link rel="stylesheet" href="assets/css/leaflet.compass.css" />
-    <link rel="stylesheet" href="assets/js/leaflet-routing-machine-2.6.1/css/leaflet-routing-machine.css">
-
+	<link rel="stylesheet" href="assets/css/leaflet.compass.css" />
+	
+	<link rel="stylesheet" href="assets/js/leaflet-routing-machine-2.6.1/css/leaflet-routing-machine.css">
+	
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
     <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
     <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
     <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  
   </head>
 
-  <body>
+  <body >
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -41,15 +43,20 @@
           <a class="navbar-brand" href="#">FireGPS</a>
         </div>
 		
-        
-	<form class="navbar-form navbar-right" role="search">
-		<div class="form-group has-feedback">
-			<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" class="form-control">                 
-			<span id="searchicon" class="fa fa-search form-control-feedback"></span>
-		</div>
-	  </form>
-        
-		  
+		
+		
+        <div class="navbar-collapse collapse">
+		
+			 
+		  <form class="navbar-form navbar-right" role="search">
+			<div id="suggestionList" class="form-group has-feedback">
+				<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" class="form-control">  
+				<span id="searchicon" class="fa fa-search form-control-feedback"></span>
+			</div>
+			
+		  </form>
+			
+		 	  
           <ul class="nav navbar-nav">
             <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;A propos</a></li>
 		
@@ -64,13 +71,18 @@
             </li>
           </ul>
         </div><!--/.navbar-collapse -->
-		<div id="results" class="collapse in" style="color:white;">
+		<div class="suggestionsBox" id="suggestions" style="display:none;">
+		<div id="results" class="suggestionList">
 		</div>
+	</div>
       </div>
     </div>
 
+	
+
     <div id="container">
-      <div id="map"></div>
+	
+        <div id="map"></div>
     </div>
     
     <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
@@ -177,7 +189,7 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
@@ -185,16 +197,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
-    <script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
-
-    <script src="assets/js/cordova-2.3.0.js"></script>
-    <script src="assets/js/leaflet.compass.js"></script>
-        
-    <script src="assets/js/Control.Geocoder.js"></script>
+	<script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+    
+	<script src="assets/js/Control.Geocoder.js"></script>
+	
+	<script src="assets/js/cordova-2.3.0.js"></script>
+	<script src="assets/js/leaflet.compass.js"></script>
+	
     <script src="assets/js/leaflet-routing-machine-2.6.1/dist/leaflet-routing-machine.js"></script>
     <script src="assets/js/leaflet-routing-machine-2.6.1/src/L.Routing.Localization.js"></script>
-
+    
     <script src="assets/js/app.js"></script>
-
   </body>
 </html>
