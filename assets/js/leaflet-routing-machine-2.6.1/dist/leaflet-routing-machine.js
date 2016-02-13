@@ -1338,7 +1338,8 @@ if (typeof module !== undefined) module.exports = polyline;
 		createStepsContainer: function() {
 			return L.DomUtil.create('tbody', '');
 		},
-
+		//Afficher parcours
+		/********************************************************/
 		createStep: function(text, distance, icon, steps) {
 			var row = L.DomUtil.create('tr', '', steps),
 				span,
@@ -1348,6 +1349,20 @@ if (typeof module !== undefined) module.exports = polyline;
 			td.appendChild(span);
 			td = L.DomUtil.create('td', '', row);
 			td.appendChild(document.createTextNode(text));
+			
+			//Speak 
+			/***************************************************/
+			var u = new SpeechSynthesisUtterance();
+			 u.text = text;
+			 u.lang = 'fr-FR';
+			 u.rate = 1.2;
+			 //u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+			 speechSynthesis.speak(u);
+			 
+			 /*******************************************************/
+			
+			
+			
 			td = L.DomUtil.create('td', '', row);
 			td.appendChild(document.createTextNode(distance));
 			return row;
