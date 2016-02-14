@@ -1348,23 +1348,32 @@ if (typeof module !== undefined) module.exports = polyline;
 			span = L.DomUtil.create('span', 'leaflet-routing-icon leaflet-routing-icon-'+icon, td);
 			td.appendChild(span);
 			td = L.DomUtil.create('td', '', row);
+			//parcours
 			td.appendChild(document.createTextNode(text));
+			//distance
+			td = L.DomUtil.create('td', '', row);
+			td.appendChild(document.createTextNode(distance));
 			
 			//Speak 
 			/***************************************************/
+			
 			var u = new SpeechSynthesisUtterance();
-			 u.text = text;
+			if(distance=="0 m")
+			{
+				u.text = text;
+			}
+			else
+			{
+				u.text = 'A ' +distance+' '+text;
+			}
+			 
 			 u.lang = 'fr-FR';
-			 u.rate = 1.2;
+			 u.rate = 1;
 			 //u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
 			 speechSynthesis.speak(u);
 			 
 			 /*******************************************************/
 			
-			
-			
-			td = L.DomUtil.create('td', '', row);
-			td.appendChild(document.createTextNode(distance));
 			return row;
 		}
 	});
