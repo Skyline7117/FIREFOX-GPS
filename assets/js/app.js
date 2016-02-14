@@ -1,5 +1,52 @@
 var map, featureList,locationLat,locationLng,geolocation;
 
+ /**************************************************************/
+ /**************************************************************/
+ /**************************************************************/
+ //reconnaissance vocale 
+ var recognition = new webkitSpeechRecognition();
+ 
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang='fr-FR';
+  recognition.start();
+  recognition.onstart = function() { console.log('reconnaissance démarrée');}
+  
+  recognition.onresult = function(event) {
+      
+    var interim_transcript = '';
+    var final_transcript='';
+    var searchbox=document.getElementById('searchbox');
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+    final_transcript = capitalize(final_transcript);
+    searchbox.value=linebreak(final_transcript);
+    
+    /*final_span.innerHTML = linebreak(final_transcript);
+    interim_span.innerHTML = linebreak(interim_transcript);*/
+  };
+  var first_char = /\S/;
+    function capitalize(s) {
+      console.log(s);
+      return s.replace(first_char, function(m) { return m.toUpperCase(); });
+    }
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+ 
+ 
+ 
+/********************************************************************/
+/********************************************************************/
+/********************************************************************/
+
 
 $(window).resize(function() {
   sizeLayerControl();
