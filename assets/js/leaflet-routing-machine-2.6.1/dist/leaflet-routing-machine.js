@@ -13,7 +13,7 @@ function corslite(url, callback, cors) {
     }
 
     var x = new window.XMLHttpRequest();
-
+	
     function isSuccessful(status) {
         return status >= 200 && status < 300 || status === 304;
     }
@@ -1191,11 +1191,13 @@ if (typeof module !== undefined) module.exports = polyline;
 					distance: this._formatter.formatDistance(alt.summary.totalDistance, this.options.totalDistanceRoundingSensitivity),
 					time: this._formatter.formatTime(alt.summary.totalTime)
 				}, alt);
+				
 			altDiv.innerHTML = typeof(template) === 'function' ? template(data) : L.Util.template(template, data);
 			L.DomEvent.addListener(altDiv, 'click', this._onAltClicked, this);
 			this.on('routeselected', this._selectAlt, this);
 
 			altDiv.appendChild(this._createItineraryContainer(alt));
+			
 			return altDiv;
 		},
 
@@ -1219,13 +1221,73 @@ if (typeof module !== undefined) module.exports = polyline;
 			    icon;
 
 			container.appendChild(steps);
+			
+			var j=0;
 
 			for (i = 0; i < r.instructions.length; i++) {
 				instr = r.instructions[i];
-				text = this._formatter.formatInstruction(instr, i);
-				distance = this._formatter.formatDistance(instr.distance);
+			
+			//direction
+			text = this._formatter.formatInstruction(instr, i);
+			//distance	
+			distance = this._formatter.formatDistance(instr.distance);
+				
+			/***********************************************/
+			/***********************************************/
+			//Lire Itinéraire (les deux premières lignes)
+				
+			/*******************************************************/
+			//Speak 
+			/***************************************************/
+			if (!SpeechRecognition) 
+			{
+				console.log('Pas de reconnaissance vocale disponible');
+				alert('Pas de reconnaissance vocale disponible');
+
+			}
+			else
+			{
+					
+				var u = new SpeechSynthesisUtterance();
+			
+				if(j<2)
+				{
+				
+					if(distance=="0 m")
+					{
+						u.text = text;
+					}
+					else
+					{
+						u.text = 'A ' +distance+' '+text;
+						
+						if(j == 1)
+						{
+							u.text = 'Puis A ' +distance+' '+text;
+						}
+						else
+						{
+							u.text = 'A ' +distance+' '+text;
+						}
+					}
+										 
+					 u.lang = 'fr-FR';
+					 u.rate = 1;
+					 //u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+					
+					
+					 
+					 
+					speechSynthesis.speak(u);
+					 
+					j++;
+				}				
+				
+			 }
+			 /*******************************************************/
+				
 				icon = this._formatter.getIconName(instr, i);
-				step = this._itineraryBuilder.createStep(text, distance, icon, steps);
+				step = this._itineraryBuilder.createStep(text, distance, icon, steps); 
 
 				this._addRowListeners(step, r.coordinates[instr.index]);
 			}
@@ -1253,7 +1315,7 @@ if (typeof module !== undefined) module.exports = polyline;
 		_onAltClicked: function(e) {
 			var altElem = e.target || window.event.srcElement;
 			while (!L.DomUtil.hasClass(altElem, 'leaflet-routing-alt')) {
-				altElem = altElem.parentElement;
+				altElem = altElem.parentElement; 
 			}
 
 			var j = this._altElements.indexOf(altElem);
@@ -1307,14 +1369,15 @@ if (typeof module !== undefined) module.exports = polyline;
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./L.Routing.Formatter":6,"./L.Routing.ItineraryBuilder":9}],9:[function(require,module,exports){
+},{"./L.Routing.Formatter":6,"./L.Routing.ItineraryBuilder":9}],9:[function(require,module,exports){var i=0;
 (function (global){
 (function() {
 	'use strict';
-
+	
 	var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
 	L.Routing = L.Routing || {};
-
+	
+	
 	L.Routing.ItineraryBuilder = L.Class.extend({
 		options: {
 			containerClassName: ''
@@ -1341,6 +1404,8 @@ if (typeof module !== undefined) module.exports = polyline;
 		//Afficher parcours
 		/********************************************************/
 		createStep: function(text, distance, icon, steps) {
+		
+			
 			var row = L.DomUtil.create('tr', '', steps),
 				span,
 				td;
@@ -1348,32 +1413,19 @@ if (typeof module !== undefined) module.exports = polyline;
 			span = L.DomUtil.create('span', 'leaflet-routing-icon leaflet-routing-icon-'+icon, td);
 			td.appendChild(span);
 			td = L.DomUtil.create('td', '', row);
-			//parcours
 			td.appendChild(document.createTextNode(text));
-			//distance
+			 
+			/*******************************************************/
+						
 			td = L.DomUtil.create('td', '', row);
 			td.appendChild(document.createTextNode(distance));
 			
-			//Speak 
-			/***************************************************/
+			/*******************************************************/
 			
-			var u = new SpeechSynthesisUtterance();
-			if(distance=="0 m")
-			{
-				u.text = text;
-			}
-			else
-			{
-				u.text = 'A ' +distance+' '+text;
-			}
-			 
-			 u.lang = 'fr-FR';
-			 u.rate = 1;
-			 //u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
-			 speechSynthesis.speak(u);
-			 
-			 /*******************************************************/
-			
+			//u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+
+			/*******************************************************/
+
 			return row;
 		}
 	});
