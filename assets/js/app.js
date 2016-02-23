@@ -1,55 +1,89 @@
 var map, featureList,locationLat,locationLng,geolocation;
 
+var SpeechRecognition = SpeechRecognition ||
+							  webkitSpeechRecognition ||
+							  mozSpeechRecognition ||
+							  msSpeechRecognition ||
+							  oSpeechRecognition;
+
+
+if (!SpeechRecognition) 
+{
+	alert('Pas de reconnaissance vocale disponible');
+
+}
+else
+{
+	texte="Bienvenue sur FireGP S";
+
+	var u = new SpeechSynthesisUtterance();
+	 u.text = texte;
+	 u.lang = 'fr-FR';
+	 u.rate = 1.2;
+	 //u.onend = function(event) { alert('Finished in ' + event.elapsedTime + ' seconds.'); }
+	 speechSynthesis.speak(u);
+
+}
+ 
+
  /**************************************************************/
  /**************************************************************/
  /**************************************************************/
  //reconnaissance vocale 
- 
- function speechVoice()
-{
-	 var recognition = new webkitSpeechRecognition();
-	 
-	  recognition.continuous = true;
-	  recognition.interimResults = true;
-	  recognition.lang='fr-FR';
-	  recognition.start();
-	  recognition.onstart = function() { console.log('reconnaissance démarrée');}
-	  
-	  recognition.onresult = function(event) {
-	      
-	    var interim_transcript = '';
-	    var final_transcript='';
-	    var searchbox=document.getElementById('searchbox');
-	    for (var i = event.resultIndex; i < event.results.length; ++i) {
-	      if (event.results[i].isFinal) {
-	        final_transcript += event.results[i][0].transcript;
-	      } else {
-	        interim_transcript += event.results[i][0].transcript;
-	      }
-	    }
-	    final_transcript = capitalize(final_transcript);
-	    searchbox.value=linebreak(final_transcript);
-	    
-	    /*final_span.innerHTML = linebreak(final_transcript);
-	    interim_span.innerHTML = linebreak(interim_transcript);*/
-	  };
-	  var first_char = /\S/;
-	    function capitalize(s) {
-	      console.log(s);
-	      return s.replace(first_char, function(m) { return m.toUpperCase(); });
-	    }
-	var two_line = /\n\n/g;
-	var one_line = /\n/g;
-	function linebreak(s) {
-	  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
-	}
- 
-} 
- 
-/********************************************************************/
-/********************************************************************/
-/********************************************************************/
 
+function speechVoice()
+{
+ 
+		 if (!SpeechRecognition) 
+		{
+			console.log('Pas de reconnaissance vocale disponible');
+			alert('Pas de reconnaissance vocale disponible');
+
+		}
+		else
+		{
+			 var recognition = new webkitSpeechRecognition();
+			 
+			  recognition.continuous = true;
+			  recognition.interimResults = true;
+			  recognition.lang='fr-FR';
+			  recognition.start();
+			  recognition.onstart = function() { console.log('reconnaissance démarrée');}
+			  
+			  recognition.onresult = function(event) {
+				  
+				var interim_transcript = '';
+				var final_transcript='';
+				var searchbox=document.getElementById('searchbox');
+				for (var i = event.resultIndex; i < event.results.length; ++i) {
+				  if (event.results[i].isFinal) {
+					final_transcript += event.results[i][0].transcript;
+				  } else {
+					interim_transcript += event.results[i][0].transcript;
+				  }
+				}
+				final_transcript = capitalize(final_transcript);
+				searchbox.value=linebreak(final_transcript);
+				
+				final_span.innerHTML = linebreak(final_transcript);
+				interim_span.innerHTML = linebreak(interim_transcript);
+			  };
+			  var first_char = /\S/;
+				function capitalize(s) {
+				  console.log(s);
+				  return s.replace(first_char, function(m) { return m.toUpperCase(); });
+				}
+			var two_line = /\n\n/g;
+			var one_line = /\n/g;
+			function linebreak(s) {
+			  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+			}
+
+		}
+} 
+/********************************************************************/
+/********************************************************************/
+/********************************************************************/
 
 $(window).resize(function() {
   sizeLayerControl();
@@ -106,7 +140,7 @@ var mapquestOSM = L.tileLayer("https://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}
   attribution: 'Carte extraite de <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.'
 });
 
-/* POIs et tÃ©lÃ©chargement des POIs */
+/* POIs et téléchargement des POIs */
 var highlight = L.geoJson(null);
 var highlightStyle = {
   stroke: false,
@@ -137,7 +171,7 @@ $.getJSON("data/boroughs.geojson", function (data) {
   boroughs.addData(data);
 });
 
-/* POIs et tÃ©lÃ©chargement des POIs */
+/* POIs et téléchargement des POIs */
 var markerClusters = new L.MarkerClusterGroup({
   spiderfyOnMaxZoom: true,
   showCoverageOnHover: false,
@@ -157,17 +191,16 @@ map = L.map("map", {
   attributionControl: false
 });
 
-//geolocalisation 
-/*************************************************************/
-/*************************************************************/
-/*************************************************************/
+/********************************************************************/
+/******************************************************************/
+//Géolocalisation
 function onLocationFound(e)
 {
 	var radius = e.accuracy / 2;
-	
+
 	L.marker(e.latlng).addTo(map)
 		.bindPopup("Vous êtes à " + radius + " mètres de ce point !").openPopup();
-	
+
 	L.circle(e.latlng, radius).addTo(map);
 }
 
@@ -180,6 +213,20 @@ map.on('locationerror', onLocationError);
 
 map.locate({setView: true, maxZoom: 16});
 
+/**********************************************************************/
+/**********************************************************************/
+//bousole
+var onDeviceReady = function() {
+	layer.addTo(map);
+	L.control.compass().addTo(map);
+};
+
+function init() 
+{
+	document.addEventListener("deviceready", onDeviceReady, true);
+}
+/**********************************************************************/
+/**********************************************************************/
 /* Contribution*/
 function updateAttribution(e) {
   $.each(map._layers, function(index, layer) {
@@ -196,7 +243,7 @@ var attributionControl = L.control({
 });
 attributionControl.onAdd = function (map) {
   var div = L.DomUtil.create("div", "leaflet-control-attribution");
-  div.innerHTML = "<span class='hidden-xs'>DÃ©veloppÃ© par <a href='https://github.com/Skyline7117/FIREFOX-GPS'>NicEvry</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
+  div.innerHTML = "<span class='hidden-xs'>Développé par <a href='https://github.com/Skyline7117/FIREFOX-GPS'>NicEvry</a> | </span><a href='#' onclick='$(\"#attributionModal\").modal(\"show\"); return false;'>Attribution</a>";
   return div;
 };
 map.addControl(attributionControl);
@@ -225,8 +272,8 @@ var locateControl = L.control.locate({
   metric: false,
   strings: {
     title: "Ma location",
-    popup: "vous Ãªtes Ã  {distance} {unit} depuis ce point",
-    outsideMapBoundsMsg: "Vous Ãªtes en dehors de la carte"
+    popup: "vous êtes à {distance} {unit} depuis ce point",
+    outsideMapBoundsMsg: "Vous êtes en dehors de la carte"
   },
   locateOptions: {
     maxZoom: 18,
@@ -245,16 +292,15 @@ map.on('locationfound',getGeolocation);
 
 // routing
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: 'Â© OpenStreetMap contributors'
+    attribution: '© OpenStreetMap contributors'
 }).addTo(map);
-
-
 
 
 var routingControl=L.Routing.control({
     routeWhileDragging: true,
     autoRoute : true,
     language:'fr',
+	showAlternatives: true
     
     
 }).addTo(map);
@@ -354,7 +400,6 @@ function getGeolocation(e)
    
 }
 
-
 //recherche adresse
 /*************************************************************/
 /*************************************************************/
@@ -401,6 +446,7 @@ function search_adresse(adresse)
   
 }
 
+
 // choix de l'adresse
 /**********************************************************/
 /**********************************************************/
@@ -417,9 +463,8 @@ function chooseAdresse(lat, lng, type) {
  demasquer.style.display="none";
  rech.value=type;
  
+ 
  //map.panTo(location);
-  
-   
   
   /*if (type == 'city' || type == 'administrative') {
     map.setZoom(11);
@@ -466,7 +511,7 @@ function chooseAdresse(lat, lng, type) {
 var map = L.map('map');
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: 'Â© OpenStreetMap contributors'
+    attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
 L.Routing.control({
