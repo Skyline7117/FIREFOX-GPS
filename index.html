@@ -48,19 +48,19 @@
         <div class="navbar-collapse collapse">
 		
 			 
-	  <form class="navbar-form navbar-right" role="search">
-		<div id="suggestionList" class="form-group has-feedback">
-			<a onclick="speechVoice();">
-				<img style="width:30px;" src="assets/img/mic.png" />
-			</a>
-			<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" class="form-control">  
-			<span id="searchicon" class="fa fa-search form-control-feedback"></span>
-		</div>
-		<div class="suggestionsBox" id="suggestions" style="display:none;">
-			<div id="results" class="suggestionList">
+		  <form class="navbar-form navbar-right" role="search">
+			<div id="suggestionList" class="form-group has-feedback">
+				<a onclick="speechVoice();">
+					<img style="width:30px;" src="assets/img/mic.png" />
+				</a>
+				<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" class="form-control">  
+				<span id="searchicon" class="fa fa-search form-control-feedback"></span>
 			</div>
-		</div>
-	  </form>
+			<div class="suggestionsBox" id="suggestions" style="display:none;">
+				<div id="results" class="suggestionList">
+				</div>
+			</div>
+		  </form>
 			
 		 	  
           <ul class="nav navbar-nav">
@@ -77,10 +77,7 @@
             </li>
           </ul>
         </div><!--/.navbar-collapse -->
-		<div class="suggestionsBox" id="suggestions" style="display:none;">
-		<div id="results" class="suggestionList">
-		</div>
-	</div>
+		
       </div>
     </div>
 
