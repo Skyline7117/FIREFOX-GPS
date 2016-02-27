@@ -1239,8 +1239,10 @@ if (typeof module !== undefined) module.exports = polyline;
 			/*******************************************************/
 			//Speak 
 			/***************************************************/
-			if (!SpeechRecognition) 
+			if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 			{
+
+				upgrade();
 				console.log('Pas de reconnaissance vocale disponible');
 				alert('Pas de reconnaissance vocale disponible');
 
