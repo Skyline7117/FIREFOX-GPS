@@ -1,17 +1,8 @@
 var map, featureList,locationLat,locationLng,geolocation;
 
-
-function upgrade() {
-  start_button.style.visibility = 'hidden';
-  showInfo('info_upgrade');
-}
-
 if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 {
-
-  upgrade();
   alert('Pas de reconnaissance vocale disponible');
-
 }
 else
 {
@@ -37,11 +28,8 @@ function speechVoice()
  
 		if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 		{
-
-			upgrade();
 			console.log('Pas de reconnaissance vocale disponible');
 			alert('Pas de reconnaissance vocale disponible');
-
 		}
 		else
 		{
