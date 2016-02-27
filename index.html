@@ -48,19 +48,20 @@
         <div class="navbar-collapse collapse">
 		
 			 
-		  <form class="navbar-form navbar-right" role="search">
+		<div class="navbar-form navbar-right" role="search">
 			<div id="suggestionList" class="form-group has-feedback">
 				<a onclick="speechVoice();">
-					<img style="width:30px;" src="assets/img/mic.png" />
+					<img style="width:30px;" src="assets/img/mic.gif" id="start_img"/>
 				</a>
-				<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" class="form-control">  
+				<input id="searchbox" type="text" placeholder="Rechercher" onkeyup="search_adresse(this.value);" value="<?php if(isset($_GET['searchbox'])){echo $_GET['searchbox'];}?>" class="form-control">  
 				<span id="searchicon" class="fa fa-search form-control-feedback"></span>
-			</div>
-			<div class="suggestionsBox" id="suggestions" style="display:none;">
-				<div id="results" class="suggestionList">
+				
+				<div class="suggestionsBox" id="suggestions" style="display:none;">
+					<div id="results" class="suggestionList">
+					</div>
 				</div>
 			</div>
-		  </form>
+		  </div>
 			
 		 	  
           <ul class="nav navbar-nav">
