@@ -1,15 +1,16 @@
 var map, featureList,locationLat,locationLng,geolocation;
 
-var SpeechRecognition = SpeechRecognition ||
-							  webkitSpeechRecognition ||
-							  mozSpeechRecognition ||
-							  msSpeechRecognition ||
-							  oSpeechRecognition;
 
+function upgrade() {
+  start_button.style.visibility = 'hidden';
+  showInfo('info_upgrade');
+}
 
-if (!SpeechRecognition) 
+if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 {
-	alert('Pas de reconnaissance vocale disponible');
+
+  upgrade();
+  alert('Pas de reconnaissance vocale disponible');
 
 }
 else
@@ -34,8 +35,10 @@ else
 function speechVoice()
 {
  
-		 if (!SpeechRecognition) 
+		if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 		{
+
+			upgrade();
 			console.log('Pas de reconnaissance vocale disponible');
 			alert('Pas de reconnaissance vocale disponible');
 
@@ -50,37 +53,91 @@ function speechVoice()
 			  recognition.start();
 			  recognition.onstart = function() { console.log('reconnaissance démarrée');}
 			  
-			  recognition.onresult = function(event) {
+			   recognition.onstart = function() 
+			  { 
+				
+				console.log('reconnaissance démarrée');
+				start_img.src = 'assets/img/mic-animate.gif';  
+			  }
+			  
+			  recognition.onresult = function(event) 
+			  {
 				  
 				var interim_transcript = '';
 				var final_transcript='';
 				var searchbox=document.getElementById('searchbox');
-				for (var i = event.resultIndex; i < event.results.length; ++i) {
-				  if (event.results[i].isFinal) {
-					final_transcript += event.results[i][0].transcript;
-				  } else {
-					interim_transcript += event.results[i][0].transcript;
-				  }
+				for (var i = event.resultIndex; i < event.results.length; ++i) 
+				{
+					  if (event.results[i].isFinal) 
+					  {
+						final_transcript += event.results[i][0].transcript;
+					  } 
+					  else 
+					  {
+						interim_transcript += event.results[i][0].transcript;
+					  }
 				}
 				final_transcript = capitalize(final_transcript);
 				searchbox.value=linebreak(final_transcript);
 				
 				final_span.innerHTML = linebreak(final_transcript);
 				interim_span.innerHTML = linebreak(interim_transcript);
+				
+				//recherche
+				var rech = document.getElementById('searchbox'); 
+				search_adresse(rech.value);
+				
 			  };
-			  var first_char = /\S/;
-				function capitalize(s) {
+			  
+			var first_char = /\S/;
+			function capitalize(s) 
+			{
 				  console.log(s);
 				  return s.replace(first_char, function(m) { return m.toUpperCase(); });
-				}
+			}
 			var two_line = /\n\n/g;
 			var one_line = /\n/g;
-			function linebreak(s) {
+			function linebreak(s) 
+			{
 			  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+			}
+			
+			
+		   recognition.onerror = function(event) {
+			if (event.error == 'no-speech') {
+			  start_img.src = 'assets/img/mic.gif';
+			  showInfo('info_no_speech');
+			  ignore_onend = true;
+			}
+			if (event.error == 'audio-capture') {
+			  start_img.src = 'assets/img/mic.gif';
+			  showInfo('info_no_microphone');
+			  ignore_onend = true;
+			}
+			if (event.error == 'not-allowed') {
+			  if (event.timeStamp - start_timestamp < 100) {
+				showInfo('info_blocked');
+			  } else {
+				showInfo('info_denied');
+			  }
+			  ignore_onend = true;
+			}
+		  };
+			
+			
+			recognition.onend = function() 
+			{ 
+				
+				console.log('reconnaissance fini');
+				//l'image fin  
+				start_img.src = 'assets/img/mic.gif';  
 			}
 
 		}
 } 
+
+
+
 /********************************************************************/
 /********************************************************************/
 /********************************************************************/
@@ -407,7 +464,7 @@ function getGeolocation(e)
 //Module recherche
 function search_adresse(adresse) 
 {
-	
+	start_img.src = 'assets/img/mic.gif';
 	var masquer = document.getElementById('results'); 
 	var demasquer = document.getElementById('suggestions');  
 	
