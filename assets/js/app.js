@@ -1,5 +1,28 @@
 var map, featureList,locationLat,locationLng,geolocation;
 
+//Masquer l'itinéraire au clique de l'utilisateur 
+/********************************************************************/
+/********************************************************************/
+/********************************************************************/
+
+$(document).ready(function() 
+{
+			
+	$(".leaflet-routing-alternatives-container").click
+	(
+		function() 
+		{
+				$( "table" ).slideToggle( "slow" );
+		
+		}
+	);
+  
+});
+
+/********************************************************************/
+/********************************************************************/
+/********************************************************************/
+
 if ( !('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window) )
 {
   alert('Pas de reconnaissance vocale disponible');
