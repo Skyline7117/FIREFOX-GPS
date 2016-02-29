@@ -19,7 +19,7 @@
 			routeDragInterval: 500,
 			waypointMode: 'connect',
 			useZoomParameter: false,
-			showAlternatives: false
+			showAlternatives: true
 		},
 
 		initialize: function(options) {
