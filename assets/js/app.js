@@ -12,7 +12,7 @@ $(document).ready(function()
 	(
 		function() 
 		{
-				$( "table" ).slideToggle( "slow" );
+			$('tr:gt(0)').slideToggle( "slow" );
 		
 		}
 	);
