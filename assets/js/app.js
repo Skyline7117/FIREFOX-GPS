@@ -506,7 +506,7 @@ function search_adresse(adresse)
 			
 		  items.push
 		  (
-			'<ul><li><a href="#" onclick="chooseAdresse(' +
+			'<ul><li><a href="#" onclick="changementURL(' +
 			val.lat + ', ' + val.lon +' ,\' '+texte+ '\' );return false;">' + val.display_name +
 			'</a></li></ul>'
 		  );
@@ -528,6 +528,30 @@ function search_adresse(adresse)
 		}
 	});
   
+}
+
+// chargement de la page
+/**********************************************************/
+/**********************************************************/
+
+function chargement()
+{
+	
+	adresse=document.getElementById('searchbox').value;
+	lat=document.getElementById('lat').value;
+	lng=document.getElementById('lng').value;
+	
+	chooseAdresse(lat, lng, adresse);
+}
+
+// url
+/**********************************************************/
+/**********************************************************/
+
+function changementURL(lat, lng, adresse)
+{
+
+	document.location.href = "?q=FIREFOX-GPS_mobile/FIREFOX-GPS_mobile/index.php&searchbox="+adresse+"&lat="+lat+"&lng="+lng+"";	
 }
 
 
