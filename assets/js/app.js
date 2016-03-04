@@ -468,6 +468,19 @@ function getGeolocation(e)
    
 }
 
+/********************************************/
+/*********************************************/
+/*******************************************/
+//Echapper une apostrophes
+
+function addslashes(str)
+{
+
+	str=str.replace(/\'/g,'&apos;');
+
+	return str;
+}
+
 //recherche adresse
 /*************************************************************/
 /*************************************************************/
@@ -488,10 +501,13 @@ function search_adresse(adresse)
 
 		$.each(data, function(key, val)
 		{
+		  texte=addslashes(val.display_name);
+		  console.log(texte);	
+			
 		  items.push
 		  (
 			'<ul><li><a href="#" onclick="chooseAdresse(' +
-			val.lat + ', ' + val.lon +' ,\' '+val.display_name+ '\' );return false;">' + val.display_name +
+			val.lat + ', ' + val.lon +' ,\' '+texte+ '\' );return false;">' + val.display_name +
 			'</a></li></ul>'
 		  );
 		  
