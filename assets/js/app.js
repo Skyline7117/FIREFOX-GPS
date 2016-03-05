@@ -551,7 +551,7 @@ function chargement()
 function changementURL(lat, lng, adresse)
 {
 
-	document.location.href = "?q=FIREFOX-GPS_mobile/FIREFOX-GPS_mobile/index.php&searchbox="+adresse+"&lat="+lat+"&lng="+lng+"";	
+	document.location.href = "?q=index.php&searchbox="+adresse+"&lat="+lat+"&lng="+lng+"";	
 }
 
 
